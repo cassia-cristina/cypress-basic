@@ -1,35 +1,10 @@
-name: Node.js CI
+image: 'cypress/base'
 
-on:
-  push:
-    branches: 
-    - main
+stages:
+  - e2e
 
-  workflow_dispatch:
-
-jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2.1.5
-      with:
-        node-version: 16.x
-        
-    # instalacao das dependências
-    - run: npm install
-    
-    # execucao dos testes
-    - run: npx cypress run
-        
-    # upload dos vídeos gerados
-    - name: Upload videos
-      uses: actions/upload-artifact@v2.2.3
-      if: always()
-      with:
-        name: videos
-        path: cypress/videos
+end-to-end testing:
+  stage: e2e
+  script:
+    - npm install
+    - npm test
